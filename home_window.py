@@ -16,34 +16,17 @@ class HeaderFrame(QFrame):
 
     def init_frame(self):
 
-        self.setFrameStyle(QFrame.StyledPanel)
-        self.setMinimumHeight(75)
-        self.setMinimumWidth(420)
-        self.setContentsMargins(6, 10, 6, 10)
-
         self.create_frame_content()
 
     def create_frame_content(self):
 
-        self.name_label = QLabel("Name")
-        self.name_label.setStyleSheet("padding-left: 15")
-        self.name_label.setFont(QFont("Arial", 10))
-
-        self.birthday_label = QLabel("Birthday")
-        self.birthday_label.setStyleSheet("padding-left: 15")
-        self.birthday_label.setFont(QFont("Arial", 10))
-
-        self.add_button = QPushButton("+")
-        self.add_button.setStyleSheet("border: 10; border-radius: 20")
-        self.add_button.setMinimumHeight(37.5)
+        self.name_label = QLabel("Birthday Tracker App")
+        self.add_person_button = QPushButton("+")
 
         self.hbox = QHBoxLayout()
-        self.hbox.setContentsMargins(0, 10, 0, 10)
-        self.hbox.setSpacing(0)
-
-        self.hbox.addWidget(self.name_label, stretch=2)
-        self.hbox.addWidget(self.birthday_label, stretch=2)
-        self.hbox.addWidget(self.add_button, stretch=1)
+        self.hbox.addWidget(self.name_label)
+        self.hbox.addStretch()
+        self.hbox.addWidget(self.add_person_button)
 
         self.setLayout(self.hbox)
 
@@ -60,7 +43,6 @@ class BirthdayGroupBox(QGroupBox):
 
     def init_groupbox(self):
         self.setTitle(self.title)
-        self.setContentsMargins(0, 0, 0, 0)
 
 
 class TodayBirthdayFrame(QFrame):
@@ -69,18 +51,24 @@ class TodayBirthdayFrame(QFrame):
     birthday is in the current day
     """
 
-    def __init__(self):
+    def __init__(self, name, birthday):
         super().__init__()
+        self.name = name
+        self.birthday = birthday
         self.init_frame()
 
     def init_frame(self):
-        self.setFrameStyle(QFrame.StyledPanel)
-        self.setMaximumHeight(150)
-        self.setMinimumHeight(150)
-        self.setContentsMargins(6, 10, 6, 10)
+        self.create_frame_content()
 
     def create_frame_content(self):
-        pass
+
+        self.birthday_frame = BirthdayFrame(self.name, self.birthday)
+
+        self.vbox = QVBoxLayout()
+        # TODO: Understand how .setContentsMargins affects other widgets
+        self.vbox.setContentsMargins(0, 0, 0, 0)
+        self.vbox.addWidget(self.birthday_frame)
+        self.setLayout(self.vbox)
 
 
 class UpcomingBirthdayGroupBox(QGroupBox):
@@ -96,7 +84,6 @@ class UpcomingBirthdayGroupBox(QGroupBox):
 
     def init_groupbox(self):
         self.setTitle(self.title)
-        self.setContentsMargins(0, 0, 0, 0)
 
 
 class BirthdayFrame(QFrame):
@@ -105,20 +92,29 @@ class BirthdayFrame(QFrame):
     and categorical icon of person
     """
 
-    def __init__(self):
+    def __init__(self, name, birthday):
         super().__init__()
+
+        self.name = name
+        self.birthday = birthday
+
         self.init_frame()
 
     def init_frame(self):
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setMaximumHeight(150)
-        self.setMinimumHeight(150)
-        self.setContentsMargins(6, 10, 6, 10)
-
         self.create_frame_content()
 
     def create_frame_content(self):
-        pass
+
+        self.name_label = QLabel(self.name)
+        self.birthday_label = QLabel(self.birthday)
+        self.blank_label = QLabel("")
+
+        self.hbox = QHBoxLayout()
+        self.hbox.addWidget(self.name_label, stretch=2)
+        self.hbox.addWidget(self.birthday_label, stretch=2)
+        self.hbox.addWidget(self.blank_label, stretch=1)
+        self.setLayout(self.hbox)
 
 
 class HomeWindow(QScrollArea):
@@ -140,28 +136,32 @@ class HomeWindow(QScrollArea):
         self.setWindowIcon(QIcon("assets/icon.png"))
         self.setWidgetResizable(True)
 
+        # HEADER FRAME
         self.header_frame = HeaderFrame()
 
-        self.birthday_frame1 = TodayBirthdayFrame()
+        # TODAY BIRTHDAY FRAMES
+        self.today_birthday_frame1 = TodayBirthdayFrame("Jeremy Bearimy", "February 27")
+        self.today_birthday_frame2 = TodayBirthdayFrame("Tom the Cat", "February 27")
 
         self.bday_vbox = QVBoxLayout()
-        self.bday_vbox.setContentsMargins(0, 10, 0, 0)
-        self.bday_vbox.addWidget(self.birthday_frame1)
+        self.bday_vbox.addWidget(self.today_birthday_frame1)
+        self.bday_vbox.addWidget(self.today_birthday_frame2)
 
         self.birthday_groupbox = BirthdayGroupBox()
         self.birthday_groupbox.setLayout(self.bday_vbox)
 
-        self.upcoming_birthday_frame = BirthdayFrame()
+        # UPCOMING BIRTHDAY FRAMES
+        self.upcoming_bday_frame1 = BirthdayFrame("Elon Musk", "June 28")
+        self.upcoming_bday_frame2 = BirthdayFrame("Bill Gates", "October 28")
 
         self.upcoming_bday_vbox = QVBoxLayout()
-        self.upcoming_bday_vbox.setContentsMargins(0, 10, 0, 0)
-        self.upcoming_bday_vbox.addWidget(self.upcoming_birthday_frame)
+        self.upcoming_bday_vbox.addWidget(self.upcoming_bday_frame1)
+        self.upcoming_bday_vbox.addWidget(self.upcoming_bday_frame2)
 
         self.upcoming_bday_groupbox = UpcomingBirthdayGroupBox()
         self.upcoming_bday_groupbox.setLayout(self.upcoming_bday_vbox)
 
         self.vbox = QVBoxLayout()
-        self.vbox.setContentsMargins(0, 0, 0, 0)
         self.vbox.addWidget(self.header_frame)
         self.vbox.addWidget(self.birthday_groupbox)
         self.vbox.addWidget(self.upcoming_bday_groupbox)

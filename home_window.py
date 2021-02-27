@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFrame, QScrollArea, QLabel, QPushButton
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 import sys
 
 
@@ -17,8 +17,8 @@ class HeaderFrame(QFrame):
     def init_frame(self):
 
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setMaximumHeight(75)
         self.setMinimumHeight(75)
+        self.setMinimumWidth(420)
         self.setContentsMargins(6, 10, 6, 10)
 
         self.create_frame_content()
@@ -26,17 +26,24 @@ class HeaderFrame(QFrame):
     def create_frame_content(self):
 
         self.name_label = QLabel("Name")
-        self.line = QLabel("|")
+        self.name_label.setStyleSheet("padding-left: 15")
+        self.name_label.setFont(QFont("Arial", 10))
+
         self.birthday_label = QLabel("Birthday")
-        self.another_line = QLabel("|")
+        self.birthday_label.setStyleSheet("padding-left: 15")
+        self.birthday_label.setFont(QFont("Arial", 10))
+
         self.add_button = QPushButton("+")
+        self.add_button.setStyleSheet("border: 10; border-radius: 20")
+        self.add_button.setMinimumHeight(37.5)
 
         self.hbox = QHBoxLayout()
-        self.hbox.addWidget(self.name_label)
-        self.hbox.addWidget(self.line)
-        self.hbox.addWidget(self.birthday_label)
-        self.hbox.addWidget(self.another_line)
-        self.hbox.addWidget(self.add_button)
+        self.hbox.setContentsMargins(0, 10, 0, 10)
+        self.hbox.setSpacing(0)
+
+        self.hbox.addWidget(self.name_label, stretch=2)
+        self.hbox.addWidget(self.birthday_label, stretch=2)
+        self.hbox.addWidget(self.add_button, stretch=1)
 
         self.setLayout(self.hbox)
 

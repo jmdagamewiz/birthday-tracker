@@ -82,12 +82,15 @@ class AddPersonWindow(QWidget):
         self.create_window_content()
 
     def create_window_content(self):
-
         self.add_person_groupbox = AddPersonGroupBox()
+
+        self.go_back_button = QPushButton("Go Back")
+        self.go_back_button.setFixedWidth(100)
 
         self.vbox = QVBoxLayout()
         self.vbox.addWidget(self.add_person_groupbox)
         self.vbox.addStretch()
+        self.vbox.addWidget(self.go_back_button, alignment=Qt.AlignLeft)
 
         self.setLayout(self.vbox)
 

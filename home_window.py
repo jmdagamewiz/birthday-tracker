@@ -3,6 +3,10 @@ from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox
 from PyQt5.QtGui import QIcon, QFont
 import sys
 
+# TODO: make person class and make storage class
+# TODO: make add person window (also contains list of all people and allows user
+# TODO: to delete people from list)
+
 
 class HeaderFrame(QFrame):
     """
@@ -21,7 +25,10 @@ class HeaderFrame(QFrame):
     def create_frame_content(self):
 
         self.name_label = QLabel("Birthday Tracker App")
-        self.add_person_button = QPushButton("+")
+        self.name_label.setFont(QFont("Arial", 10))
+
+        self.add_person_button = QPushButton("Add Person")
+        self.add_person_button.clicked.connect(self.go_to_add_person_window)
 
         self.hbox = QHBoxLayout()
         self.hbox.addWidget(self.name_label)
@@ -29,6 +36,9 @@ class HeaderFrame(QFrame):
         self.hbox.addWidget(self.add_person_button)
 
         self.setLayout(self.hbox)
+
+    def go_to_add_person_window(self):
+        pass
 
 
 class BirthdayGroupBox(QGroupBox):
@@ -58,16 +68,29 @@ class TodayBirthdayFrame(QFrame):
         self.init_frame()
 
     def init_frame(self):
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setFrameShadow(QFrame.Plain)
         self.create_frame_content()
 
     def create_frame_content(self):
 
         self.birthday_frame = BirthdayFrame(self.name, self.birthday)
 
+        self.message_label = QLabel(f"It's {self.name}'s birthday today!")
+        self.greet_button = QPushButton("Greet him!")
+
+        self.hbox = QHBoxLayout()
+        self.hbox.addSpacing(10)
+        self.hbox.addWidget(self.message_label)
+        self.hbox.addStretch()
+        self.hbox.addWidget(self.greet_button)
+        self.hbox.addSpacing(10)
+
         self.vbox = QVBoxLayout()
         # TODO: Understand how .setContentsMargins affects other widgets
-        self.vbox.setContentsMargins(0, 0, 0, 0)
+        self.vbox.setContentsMargins(0, 0, 0, 4)
         self.vbox.addWidget(self.birthday_frame)
+        self.vbox.addLayout(self.hbox)
         self.setLayout(self.vbox)
 
 

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QRadioButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox, QFormLayout
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox, QFormLayout, QStackedWidget
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
 import sys
@@ -74,6 +74,7 @@ class ListAllWindow(QWidget):
     def create_window_content(self):
 
         self.add_person_button = QPushButton("Add Person")
+        self.add_person_button.clicked.connect(self.go_to_add_person_window)
 
         self.options_hbox = QHBoxLayout()
         self.options_hbox.addStretch()
@@ -83,6 +84,7 @@ class ListAllWindow(QWidget):
 
         self.go_back_button = QPushButton("Go Back")
         self.go_back_button.setFixedWidth(100)
+        self.go_back_button.clicked.connect(self.go_back_to_home_window)
 
         self.vbox = QVBoxLayout()
         self.vbox.addLayout(self.options_hbox)
@@ -92,9 +94,19 @@ class ListAllWindow(QWidget):
 
         self.setLayout(self.vbox)
 
+    def go_back_to_home_window(self):
+        parent = self.parentWidget()
+        while True:
+            if type(parent) == QStackedWidget:
+                break
+            parent = parent.parentWidget()
+        parent.setCurrentIndex(0)
 
-if __name__ == "__main__":
-    App = QApplication(sys.argv)
-    window = ListAllWindow()
-    window.show()
-    sys.exit(App.exec())
+    def go_to_add_person_window(self):
+        parent = self.parentWidget()
+        while True:
+            if type(parent) == QStackedWidget:
+                break
+            parent = parent.parentWidget()
+        parent.setCurrentIndex(2)
+

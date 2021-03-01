@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFrame, QScrollArea, QLabel, QPushButton
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox, QStackedWidget
 from PyQt5.QtGui import QIcon, QFont
 import sys
 
@@ -27,18 +27,23 @@ class HeaderFrame(QFrame):
         self.name_label = QLabel("Birthday Tracker App")
         self.name_label.setFont(QFont("Arial", 10))
 
-        self.add_person_button = QPushButton("Add Person")
-        self.add_person_button.clicked.connect(self.go_to_add_person_window)
+        self.list_all_button = QPushButton("List All")
+        self.list_all_button.clicked.connect(self.go_to_list_all_window)
 
         self.hbox = QHBoxLayout()
         self.hbox.addWidget(self.name_label)
         self.hbox.addStretch()
-        self.hbox.addWidget(self.add_person_button)
+        self.hbox.addWidget(self.list_all_button)
 
         self.setLayout(self.hbox)
 
-    def go_to_add_person_window(self):
-        pass
+    def go_to_list_all_window(self):
+        parent = self.parentWidget()
+        while True:
+            if type(parent) == QStackedWidget:
+                break
+            parent = parent.parentWidget()
+        parent.setCurrentIndex(1)
 
 
 class BirthdayGroupBox(QGroupBox):
@@ -194,10 +199,3 @@ class HomeWindow(QScrollArea):
         self.center_widget.setLayout(self.vbox)
 
         self.setWidget(self.center_widget)
-
-
-if __name__ == "__main__":
-    App = QApplication(sys.argv)
-    window = HomeWindow()
-    window.show()
-    sys.exit(App.exec())

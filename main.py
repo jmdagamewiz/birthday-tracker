@@ -5,6 +5,7 @@ import sys
 from home_window import HomeWindow
 from list_all_window import ListAllWindow
 from add_person_window import AddPersonWindow
+from greet_window import GreetPersonWindow
 
 
 class MainWindow(QMainWindow):
@@ -28,6 +29,7 @@ class MainWindow(QMainWindow):
         self.stack.addWidget(HomeWindow())
         self.stack.addWidget(ListAllWindow())
         self.stack.addWidget(AddPersonWindow())
+        self.stack.addWidget(GreetPersonWindow())
 
         self.vbox = QVBoxLayout()
         self.vbox.setContentsMargins(0, 0, 0, 0)

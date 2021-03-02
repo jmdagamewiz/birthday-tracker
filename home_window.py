@@ -25,7 +25,9 @@ class HeaderFrame(QFrame):
     def create_frame_content(self):
 
         self.name_label = QLabel("Birthday Tracker App")
-        self.name_label.setFont(QFont("Arial", 10))
+        font = QFont("Arial", 10)
+        font.setBold(True)
+        self.name_label.setFont(font)
 
         self.list_all_button = QPushButton("List All")
         self.list_all_button.clicked.connect(self.go_to_list_all_window)
@@ -83,6 +85,7 @@ class TodayBirthdayFrame(QFrame):
 
         self.message_label = QLabel(f"It's {self.name}'s birthday today!")
         self.greet_button = QPushButton("Greet him!")
+        self.greet_button.clicked.connect(self.go_to_greet_window)
 
         self.hbox = QHBoxLayout()
         self.hbox.addSpacing(10)
@@ -97,6 +100,15 @@ class TodayBirthdayFrame(QFrame):
         self.vbox.addWidget(self.birthday_frame)
         self.vbox.addLayout(self.hbox)
         self.setLayout(self.vbox)
+
+    def go_to_greet_window(self):
+        parent = self.parentWidget()
+        while True:
+            if type(parent) == QStackedWidget:
+                break
+            parent = parent.parentWidget()
+        parent.setCurrentIndex(3)
+
 
 
 class UpcomingBirthdayGroupBox(QGroupBox):

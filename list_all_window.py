@@ -32,6 +32,25 @@ class PersonFrame(QFrame):
         self.setLayout(self.hbox)
 
 
+class BlankListFrame(QFrame):
+
+    def __init__(self):
+        super().__init__()
+        self.init_frame()
+
+    def init_frame(self):
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setFrameShadow(QFrame.Plain)
+        self.create_frame_content()
+
+    def create_frame_content(self):
+        self.message_label = QLabel("You have not added anyone yet.")
+
+        self.vbox = QVBoxLayout()
+        self.vbox.addWidget(self.message_label)
+        self.setLayout(self.vbox)
+
+
 class ListAllGroupBox(QGroupBox):
 
     def __init__(self):
@@ -44,10 +63,10 @@ class ListAllGroupBox(QGroupBox):
         self.create_groupbox_content()
 
     def create_groupbox_content(self):
-        self.person_frame1 = PersonFrame("Jay Hara", "October 1, 1000")
+        self.blank = BlankListFrame()
 
         self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.person_frame1)
+        self.vbox.addWidget(self.blank)
 
         self.setLayout(self.vbox)
 
@@ -109,4 +128,3 @@ class ListAllWindow(QWidget):
                 break
             parent = parent.parentWidget()
         parent.setCurrentIndex(2)
-

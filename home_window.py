@@ -4,8 +4,7 @@ from PyQt5.QtGui import QIcon, QFont
 import sys
 
 # TODO: make person class and make storage class
-# TODO: make add person window (also contains list of all people and allows user
-# TODO: to delete people from list)
+# TODO: add button to delete people from list
 
 
 class HeaderFrame(QFrame):
@@ -110,6 +109,43 @@ class TodayBirthdayFrame(QFrame):
         parent.setCurrentIndex(3)
 
 
+class BlankBirthdayFrame(QFrame):
+
+    def __init__(self):
+        super().__init__()
+        self.init_frame()
+
+    def init_frame(self):
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setFrameShadow(QFrame.Plain)
+        self.create_frame_content()
+
+    def create_frame_content(self):
+        self.message_label = QLabel("No one has a birthday today.")
+
+        self.vbox = QVBoxLayout()
+        self.vbox.addWidget(self.message_label)
+        self.setLayout(self.vbox)
+
+
+class BlankUpcomingBirthdayFrame(QFrame):
+
+    def __init__(self):
+        super().__init__()
+        self.init_frame()
+
+    def init_frame(self):
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setFrameShadow(QFrame.Plain)
+        self.create_frame_content()
+
+    def create_frame_content(self):
+        self.message_label = QLabel("There are no upcoming birthdays this month.")
+
+        self.vbox = QVBoxLayout()
+        self.vbox.addWidget(self.message_label)
+        self.setLayout(self.vbox)
+
 
 class UpcomingBirthdayGroupBox(QGroupBox):
     """
@@ -179,24 +215,18 @@ class HomeWindow(QScrollArea):
         # HEADER FRAME
         self.header_frame = HeaderFrame()
 
-        # TODAY BIRTHDAY FRAMES
-        self.today_birthday_frame1 = TodayBirthdayFrame("Jeremy Bearimy", "February 27")
-        self.today_birthday_frame2 = TodayBirthdayFrame("Tom the Cat", "February 27")
+        self.blank = BlankBirthdayFrame()
 
         self.bday_vbox = QVBoxLayout()
-        self.bday_vbox.addWidget(self.today_birthday_frame1)
-        self.bday_vbox.addWidget(self.today_birthday_frame2)
+        self.bday_vbox.addWidget(self.blank)
 
         self.birthday_groupbox = BirthdayGroupBox()
         self.birthday_groupbox.setLayout(self.bday_vbox)
 
-        # UPCOMING BIRTHDAY FRAMES
-        self.upcoming_bday_frame1 = BirthdayFrame("Elon Musk", "June 28")
-        self.upcoming_bday_frame2 = BirthdayFrame("Bill Gates", "October 28")
+        self.blank_upcoming_birthday = BlankUpcomingBirthdayFrame()
 
         self.upcoming_bday_vbox = QVBoxLayout()
-        self.upcoming_bday_vbox.addWidget(self.upcoming_bday_frame1)
-        self.upcoming_bday_vbox.addWidget(self.upcoming_bday_frame2)
+        self.upcoming_bday_vbox.addWidget(self.blank_upcoming_birthday)
 
         self.upcoming_bday_groupbox = UpcomingBirthdayGroupBox()
         self.upcoming_bday_groupbox.setLayout(self.upcoming_bday_vbox)
